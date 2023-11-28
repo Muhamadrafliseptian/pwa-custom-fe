@@ -60,6 +60,11 @@
       </div>
     </div>
   </div>
+  <div v-if="callbackData">
+    Virtual Account: {{ callbackData.account_number }}
+  <br>
+  Nama Bank: {{ callbackData.bank_code }}
+  </div>
 </template>
 
 <script>
@@ -67,15 +72,17 @@ import axios from 'axios'
 export default {
   data(){
     return {
-      bank_code: 'BSI'
+      bank_code: 'BNI',
+      callbackData: {}
     }
   },
   methods: {
     createPayment(){
-      axios.post('https://api.xendit.co/callback_virtual_accounts', {
+      axios.post('https://e76b-2001-448a-2082-96cf-7936-25f1-7d60-7f75.ngrok-free.app/payment/virtualaccount', {
         bank_code: this.bank_code
       }).then((response)=>{
-        alert(response)
+        this.callbackData = response.data;
+        alert('berhasil membuat virtual account')
       })
     }
   }
