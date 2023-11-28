@@ -67,7 +67,7 @@ import axios from 'axios'
 export default {
   data(){
     return {
-      bank_code: 'BCA'
+      bank_code: 'BSI'
     }
   },
   methods: {
@@ -75,7 +75,6 @@ export default {
       axios.post('https://api.xendit.co/callback_virtual_accounts', {
         bank_code: this.bank_code
       }).then((response)=>{
-        console.log(response);
         alert(response)
       })
     }
