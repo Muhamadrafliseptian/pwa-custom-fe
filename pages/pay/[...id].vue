@@ -11,6 +11,7 @@
           <p class="mb-0">
             <b>
               <!-- {{ route.params.id[1] }} -->
+              {{ this.$route }}
             </b>
           </p>
           <p class="text-secondary">
@@ -25,12 +26,14 @@
       <div class="bg-light">
         <div class="d-md-flex px-3 justify-content-between align-items-center">
           <div class="mb-2 mb-md-0">
-            <p class="mb-0">VIRTUAL ACCOUNT NO.</p>
-            <p>
-              <small>
-                <b>2716627182</b>
-              </small>
-            </p>
+            <div v-if="callbackData">
+              <p class="mb-0">VIRTUAL ACCOUNT {{ callbackData.bank_code }}</p>
+              <p>
+                <small>
+                  <b>{{ callbackData.account_number }}</b>
+                </small>
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -52,41 +55,39 @@
           </v-timeline>
         </div> -->
       </div>
-      <div class="text-center">
-        <Button
-          @click="createPayment"
-          Label="Buat virtual account"
-        />
+      <div class="text-center" v-if="callbackData">
+        <Button @click="createPayment" Label="Buat virtual account" />
       </div>
+      <div class="text-center" v-else>UDAH ADA PAYMENT</div>
     </div>
-  </div>
-  <div v-if="callbackData">
-    Virtual Account: {{ callbackData.account_number }}
-  <br>
-  Nama Bank: {{ callbackData.bank_code }}
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+import axios from "axios";
 export default {
-  data(){
+  data() {
     return {
-      bank_code: 'BNI',
-      callbackData: {}
-    }
+      bank_code: "BNI",
+      callbackData: {},
+    };
   },
   methods: {
-    createPayment(){
-      axios.post('https://e76b-2001-448a-2082-96cf-7936-25f1-7d60-7f75.ngrok-free.app/payment/virtualaccount', {
-        bank_code: this.bank_code
-      }).then((response)=>{
-        this.callbackData = response.data;
-        alert('berhasil membuat virtual account')
-      })
-    }
-  }
-}
+    createPayment() {
+      axios
+        .post(
+          "https://e76b-2001-448a-2082-96cf-7936-25f1-7d60-7f75.ngrok-free.app/payment/virtualaccount",
+          {
+            bank_code: this.bank_code,
+          }
+        )
+        .then((response) => {
+          this.callbackData = response.data;
+          alert("berhasil membuat virtual account");
+        });
+    },
+  },
+};
 // const clicked = (data) => {
 //   alert(data);
 // };

@@ -16,7 +16,12 @@
     <div
       v-for="data in dataBank"
     >
+    <div v-if="isLoading">
+      <v-skeleton-loader type="paragraph"></v-skeleton-loader>
+    </div>
+    <div v-else>
       <CardPayment @click="pay(data.code)" :name="data.name"/>
+    </div>
     </div>
   </div>
 </template>
@@ -25,7 +30,8 @@ import axios from 'axios';
 export default {
   data(){
     return {
-      dataBank: []
+      dataBank: [],
+      isLoading: true
     }
   },
   computed: {
@@ -39,7 +45,10 @@ export default {
   methods: {
     getBank(){
       axios.get('http://localhost:3001/payment/available_bank', {}).then((response)=>{
-        this.dataBank = response.data
+        setTimeout(() => {
+          this.dataBank = response.data
+          this.isLoading = false
+        }, 3000);
         console.log(response);
       })
     },
